@@ -1,21 +1,5 @@
 # FLUX // OVERDRIVE
 
-Mobil ve PC için retro arcade blok puzzle. Neon tahta, CRT tarama çizgileri, hareketli perspektif zemin, parçacık patlamaları, ekran sarsıntısı ve sinematik kombo / bölüm / saldırı geçişleri.
-
-## Hemen oyna
-
-ZIP’i çıkar ve **index.html** dosyasını Chrome, Edge, Firefox veya Safari ile aç. Kurulum, hesap ve internet gerekmez. Telefonda dosya önizleyicisi JavaScript çalıştırmayabilir; arkadaşlarınla paylaşmak için aşağıdaki GitHub Pages yöntemini kullan.
-
-## GitHub üzerinden arkadaşlarına bağlantı gönder
-
-1. GitHub'da yeni bir repository oluştur (örnek: `flux-overdrive`).
-2. ZIP’i bilgisayarında çıkar. İçindeki dosyaları, özellikle **index.html** dosyasını repository'nin köküne yükle. ZIP dosyasını olduğu gibi yükleme.
-3. Repository **Settings → Pages → Build and deployment** bölümüne git.
-4. **Deploy from a branch**, branch **main**, klasör **/(root)** seç ve kaydet.
-5. GitHub Pages’in bu ekranda gösterdiği bağlantıyı arkadaşlarına gönder.
-
-Bu paket bir GitHub repository'sine yüklenmeye hazırdır; kendiliğinden bir GitHub hesabına yüklenmiş değildir. Oyun tek kişiliktir. Her oyuncunun ilerlemesi kendi tarayıcısında saklanır; ortak skor tablosu veya hesap sistemi yoktur. Tarayıcı depolamayı engelliyorsa oyun çalışır ama kayıt korunmayabilir.
-
 ## Oynanış ve zorluk
 
 - 8×8 tahtaya üçlü tepsiden blok yerleştir. Tam satır ve sütunlar aynı anda temizlenir.
@@ -42,14 +26,6 @@ Bu paket bir GitHub repository'sine yüklenmeye hazırdır; kendiliğinden bir G
 
 Yerleştirme noktası bloğun sol üst köşesidir. Sağ üstteki **♪** ses efektlerini açar. **◉** animasyonları ve CRT efektini azaltır; sistemin azaltılmış hareket tercihine de uyulur.
 
-## Geliştirme
-
-`dist/` düzenlenebilir HTML, CSS ve JavaScript kaynaklarını içerir. Harici kütüphane veya bağımlılık yoktur.
-
-```sh
-node check.mjs
-python3 scripts/build-standalone.py
-```
 
 Kaynaklarda değişiklik yaptıktan sonra ikinci komutu çalıştırarak kökteki tek dosyalık oyunu güncelle. `index.html` GitHub Pages'in giriş dosyasıdır. Kaynak sürümünü yerel sunucuda açmak istersen `python3 -m http.server 8000 --directory dist` komutunu kullan.
 
