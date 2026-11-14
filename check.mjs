@@ -18,3 +18,14 @@ history=recordRound(history,{roundId:'one',score:150,lines:3,moves:8},'finished'
 for(let n=0;n<60;n++)history=recordRound(history,{roundId:'r'+n,score:n,lines:0,moves:1},'saved','2026-11-14T12:00:00Z');assert.equal(history.length,50);
 assert.deepEqual(dropAnchor(140,205,{left:100,top:100},40,2,2,65),[0,0]);assert.deepEqual(dropAnchor(220,285,{left:100,top:100},40,2,2,65),[2,2]);
 console.log('PASS: score record validation, duplicate prevention, history limit, and touch drag anchor.');
+const {createRestartCountdown}=await import('./dist/engine.mjs');
+let tasks=new Map(),taskId=0,ticks=[],restarts=0;
+const clock=createRestartCountdown(n=>ticks.push(n),()=>restarts++,fn=>{tasks.set(++taskId,fn);return taskId},id=>tasks.delete(id));
+const advance=()=>{const [id,fn]=tasks.entries().next().value;tasks.delete(id);fn()};
+clock.start('round1');clock.start('round1');assert.equal(tasks.size,1);assert.deepEqual(ticks,[3]);advance();advance();assert.deepEqual(ticks,[3,2,1]);assert.equal(restarts,0);advance();assert.equal(restarts,1);assert.equal(tasks.size,0);
+clock.start('round2');clock.stop();assert.equal(tasks.size,0);assert.equal(restarts,1);
+// Full board and isolated gaps cannot accept multi-cell pieces; rotation-only moves remain legal.
+assert.equal(hasMoves(Array(64).fill(5),[{shape:SHAPES[0]}]),false);
+b=Array(64).fill(5);b[0]=0;b[10]=0;assert.equal(hasMoves(b,[{shape:SHAPES[1]}]),false);
+b[8]=0;assert.equal(hasMoves(b,[{shape:SHAPES[1]}]),true);
+console.log('PASS: 3-second restart, duplicate timer prevention, cancellation and no-move detection.');
