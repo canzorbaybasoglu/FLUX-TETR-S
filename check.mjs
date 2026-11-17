@@ -29,3 +29,8 @@ assert.equal(hasMoves(Array(64).fill(5),[{shape:SHAPES[0]}]),false);
 b=Array(64).fill(5);b[0]=0;b[10]=0;assert.equal(hasMoves(b,[{shape:SHAPES[1]}]),false);
 b[8]=0;assert.equal(hasMoves(b,[{shape:SHAPES[1]}]),true);
 console.log('PASS: 3-second restart, duplicate timer prevention, cancellation and no-move detection.');
+b=Array(64).fill(5);b[0]=0;b[8]=0;
+assert.equal(hasMoves(b,[{shape:[[0,0],[1,0]]}],true),true,'Beginner can rotate into vertical gap');
+assert.equal(hasMoves(b,[{shape:[[0,0],[1,0]]}],false),false,'Challenger cannot rotate into vertical gap');
+assert.equal(hasMoves(b,[{shape:[[0,0],[0,1]]}],false),true,'Challenger can use a matching orientation');
+console.log('PASS: Beginner vs Challenger legal-move rules.');

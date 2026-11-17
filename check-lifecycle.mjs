@@ -16,3 +16,13 @@ for(let n=0;n<3;n++){const entry=[...timers].find(([,t])=>t.ms===1000);assert(en
 const fresh=JSON.parse(storage.get('flux-save-v1'));assert.notEqual(fresh.roundId,'blocked-round');assert.equal(fresh.score,0);assert.equal(fresh.moves,0);assert.equal(get('end').classList.contains('hidden'),true);
 const history=JSON.parse(storage.get('flux-history-v1'));assert.equal(history.length,1);assert.equal(history[0].score,900);assert.equal(history[0].status,'finished');
 console.log('PASS: blocked round with 100 energy ends, saves once, and restarts automatically with a fresh playable state.');
+vm.runInContext("selectedDifficulty='challenger';startNew(true);state.pieces=[{shape:[[0,0],[1,0],[0,1]],color:1},null,null];state.board=Array(64).fill(0);render();previous=structuredClone(state);",ctx);
+const beforeShape=vm.runInContext('JSON.stringify(state.pieces[0].shape)',ctx),beforeId=JSON.parse(storage.get('flux-save-v1')).roundId;
+get('rotate').onclick();get('undo').onclick();assert.equal(vm.runInContext('JSON.stringify(state.pieces[0].shape)',ctx),beforeShape);assert.equal(vm.runInContext('state.roundId',ctx),beforeId);assert.equal(get('rotate').hidden,true);assert.equal(get('undo').hidden,true);
+vm.runInContext("state.difficulty='beginner';render()",ctx);get('rotate').onclick();assert.notEqual(vm.runInContext('JSON.stringify(state.pieces[0].shape)',ctx),beforeShape);assert.equal(get('rotate').hidden,false);
+vm.runInContext("state.board=Array(64).fill(5);state.board[0]=0;state.board[8]=0;state.pieces=[{shape:[[0,0],[1,0]],color:1},null,null];state.difficulty='beginner';render()",ctx);assert.equal(get('end').classList.contains('hidden'),true);
+vm.runInContext("state.difficulty='challenger';state.moves=1;render()",ctx);assert.equal(get('end').classList.contains('hidden'),false);
+for(let n=0;n<3;n++){const entry=[...timers].find(([,t])=>t.ms===1000);assert(entry);timers.delete(entry[0]);entry[1].fn()}
+assert.equal(JSON.parse(storage.get('flux-save-v1')).difficulty,'challenger');
+assert.equal(JSON.parse(storage.get('flux-history-v1'))[0].difficulty,'challenger');
+console.log('PASS: Challenger action guards, Beginner rotate, mode-aware game over, saved score mode and same-mode automatic restart.');
